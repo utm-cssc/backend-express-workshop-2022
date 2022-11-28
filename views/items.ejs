@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTM Store</title>
+</head>
+<style>
+  table, th, td {
+    border:1px solid black;
+  }
+</style>
+<body>
+  <h1>UTM Store</h1>
+  
+  <h2>Items</h2>
+  
+  <!-- remember to install the ejs extension so you don't get errors here -->
+  <table style="width:400px">
+    <tr>
+      <th>Id</th>
+      <th>Item Name</th>
+      <th>Price</th>
+    </tr>
+    <% for (var i = 0; i < locals.items.length; i++) { %>
+      <tr id="<%= i %>">
+        <!-- use the '=' in the '<%= %>' to output data -->
+        <th><%= items[i].id %></th>
+        <th><%= items[i].itemName %></th>
+        <th><%= items[i].price %></th>
+        <th><button value="<%= i %>" id="<%= items[i].id %> " onclick="deleteItem(this.id, this.value)">Delete</button></th>
+      </tr>
+    <% } %> 
+  </table>
+  
+  <h2>Add Items</h2>
+
+  <form action="/addItem" method="POST">
+    <label for="itemName">Item Name:</label><br>
+    <input type="text" name="itemName" placeholder="Item Name"><br>
+    <label for="price">Price:</label><br>
+    <input type="text" name="price" placeholder="Price"><br><br>
+    <input type="submit" value="Submit">
+  </form> 
+
+  <script>
+
+    function deleteItem(itemId, rowNum) {
+      const requestString = '/' + itemId
+      const response = fetch(requestString, {
+        method: 'DELETE',
+      })
+      .then(response => {
+        if (response.status === 200) {
+          document.getElementById(rowNum).remove()
+        }
+      })
+      .catch(error => {
+        console.log('Error')
+      })
+    }
+
+    // TODO
+    function updateItem(itemId) {
+      console.log('trying to update item with id: ', itemId)
+    }
+  </script>
+</body>
+</html>
