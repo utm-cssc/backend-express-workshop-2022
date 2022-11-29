@@ -1,6 +1,14 @@
 const express = require("express")
 const router = express.Router()
 
+// logging middleware
+function logger(req, res, next) {
+  console.log(`the original url of the request is: ${req.originalUrl}`)
+  next()
+}  
+
+router.use(logger)
+
 var nextId = 13
 const database = {
   'items': [
@@ -12,6 +20,23 @@ const database = {
 
 router.get('/', (req, res) => {
   res.render('items.ejs', database)
+})
+
+router.post('/addItem', (req, res) => {
+  database.items.push({'id': nextId, 'itemName': req.body.itemName, 'price': req.body.price})
+  res.render('items.ejs', database)
+  nextId += 1
+})
+
+router.delete('/:id', (req, res) => {
+  for (var i = 0; i < database.items.length; i++) {
+    if (database.items[i].id.toString() === req.params.id) {
+      database.items.splice(i, 1)
+      res.sendStatus(200)
+      return
+    }
+  }
+  res.sendStatus(404)
 })
 
 // attach the given callback arrow function to the placeholder param 'id'
