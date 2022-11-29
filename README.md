@@ -43,6 +43,5 @@ To be updated later
 
 # Credits
 
-To be updated later
-
+- Manjoy Malhotra (CSSC, GDSC), Manav Bhojak (CSSC)
 
